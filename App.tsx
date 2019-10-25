@@ -9,6 +9,7 @@ const mainNavigation = createStackNavigator(
   },
   {
     initialRouteName: "Login",
+    headerMode: "none",
   },
 );
 

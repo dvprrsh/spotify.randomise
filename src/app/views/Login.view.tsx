@@ -1,11 +1,28 @@
 import React, { FC } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
+import { NavigationStackScreenProps } from "react-navigation-stack";
+import { Container, Header, Body, Title, Content, Button } from "native-base";
 
-export const LoginView: FC = () => {
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+export const LoginView: FC<NavigationStackScreenProps> = ({
+  navigation,
+  ...props
+}) => {
   return (
-    <View style={styles.view}>
-      <Text>Hi</Text>
-    </View>
+    <Container>
+      <Header>
+        <Body>
+          <Title>Spotify.Randomise</Title>
+        </Body>
+      </Header>
+      <Content padder style={styles.view}>
+        <Button iconLeft color="#84bd00">
+          <MaterialCommunityIcons name="spotify" />
+          <Text>Login with Spotify</Text>
+        </Button>
+      </Content>
+    </Container>
   );
 };
 
