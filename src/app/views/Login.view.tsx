@@ -1,17 +1,9 @@
 import React, { FC } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationStackScreenProps } from "react-navigation-stack";
-import {
-  Container,
-  Header,
-  Body,
-  Title,
-  Content,
-  Button,
-  Icon,
-} from "native-base";
+import { Container, Header, Body, Title, Content, Icon } from "native-base";
 import { useStyles } from "../../hooks/useStyles";
-import { useLogin } from "../../hooks/useLogin";
+import { getAuthorisation, getTokens } from "../../apis/spotifyAPI";
 
 export const LoginView: FC<NavigationStackScreenProps> = ({
   navigation,
@@ -26,9 +18,7 @@ export const LoginView: FC<NavigationStackScreenProps> = ({
         </Body>
       </Header>
       <Content contentContainerStyle={styles.content} padder>
-        <TouchableOpacity
-          style={commonStyles.spotifyLogin}
-          onPress={() => useLogin()}>
+        <TouchableOpacity style={commonStyles.spotifyLogin} onPress={getTokens}>
           <Icon
             type="MaterialCommunityIcons"
             name="spotify"
