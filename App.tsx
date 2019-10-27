@@ -1,18 +1,30 @@
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
+import React from "react";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import { AppLoading } from "expo";
+import { useEffect, useState } from "react";
+import { MainNavigation } from "./src/app/views";
 
-import { LoginView } from "./src/app/views/Login.view";
+const App = () => {
+  const [isReady, setIsReady] = useState(false);
 
-const mainNavigation = createStackNavigator(
-  {
-    Login: LoginView,
-  },
-  {
-    initialRouteName: "Login",
-    headerMode: "none",
-  },
-);
+  useEffect(() => {
+    console.log("HERE");
+    const loadFont = async () => {
+      await Font.loadAsync({
+        Roboto: require("native-base/Fonts/Roboto.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+        ...Ionicons.font,
+      });
+      setIsReady(true);
+    };
+    loadFont();
+  }, []);
 
-const App = createAppContainer(mainNavigation);
-
+  if (isReady) {
+    return <MainNavigation />;
+  } else {
+    return <AppLoading />;
+  }
+};
 export default App;
