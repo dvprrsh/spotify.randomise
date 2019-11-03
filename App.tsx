@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 import { useEffect, useState } from "react";
 import { MainNavigation } from "./src/app/views";
+import { store } from "./src/store";
+import { Provider } from "react-redux";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -22,7 +24,11 @@ const App = () => {
   }, []);
 
   if (isReady) {
-    return <MainNavigation />;
+    return (
+      <Provider store={store}>
+        <MainNavigation />
+      </Provider>
+    );
   } else {
     return <AppLoading />;
   }

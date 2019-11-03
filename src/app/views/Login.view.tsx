@@ -1,15 +1,28 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationStackScreenProps } from "react-navigation-stack";
 import { Container, Header, Body, Title, Content, Icon } from "native-base";
 import { useStyles } from "../../hooks/useStyles";
-import { getAuthorisation, getTokens } from "../../apis/spotifyAPI";
+import { useSelector, useDispatch } from "react-redux";
+import { IState } from "../../store";
+import { saveTokens } from "../../store/spotify.store/spotify.actions";
+import { getAccessToken } from "../../apis/spotifyAPI";
 
 export const LoginView: FC<NavigationStackScreenProps> = ({
   navigation,
   ...props
 }) => {
   const commonStyles = useStyles();
+  const spotifyApi = useSelector((state: IState) => {
+    return state.spotifyApi;
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(getAccessToken(spotifyApi));
+  }, [spotifyApi]);
+
   return (
     <Container>
       <Header>
@@ -18,7 +31,9 @@ export const LoginView: FC<NavigationStackScreenProps> = ({
         </Body>
       </Header>
       <Content contentContainerStyle={styles.content} padder>
-        <TouchableOpacity style={commonStyles.spotifyLogin} onPress={getTokens}>
+        <TouchableOpacity
+          style={commonStyles.spotifyLogin}
+          onPress={() => dispatch(saveTokens(spotifyApi))}>
           <Icon
             type="MaterialCommunityIcons"
             name="spotify"
@@ -39,8 +54,12 @@ const styles = StyleSheet.create({
   },
   spotifyIcon: {
     color: "white",
+    alignSelf: "flex-start",
   },
   whiteText: {
     color: "white",
+    width: "100%",
+
+    paddingHorizontal: "10%",
   },
 });
