@@ -1,5 +1,6 @@
 import { AuthSession } from "expo";
 import SpotifyWebApi from "spotify-web-api-node";
+import { Credentials } from "../store/spotify.store/spotify.types";
 
 const scopes = ["playlist-modify-private", "playlist-modify-private"];
 
@@ -32,11 +33,9 @@ export const getTokens = async (api: SpotifyWebApi) => {
       },
       body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${api.getRedirectURI()}`,
     });
-    const responseJson = await response.json();
-
-    api.setAccessToken(responseJson.access_token);
-    api.setRefreshToken(responseJson.refresh_token);
-    return api;
+    const responseJson: Credentials = await response.json();
+    api.setCredentials(responseJson);
+    return responseJson;
   } catch (err) {
     console.error(err);
   }
@@ -44,12 +43,11 @@ export const getTokens = async (api: SpotifyWebApi) => {
 
 export const refreshTokens = async (
   api: SpotifyWebApi,
-): Promise<SpotifyWebApi> => {
-  try {
-    const b64Credentials = btoa(
-      `${api.getClientId()}:${api.getClientSecret()}`,
-    );
-    const refreshToken = api.getRefreshToken();
+): Promise<Credentials> => {
+  const b64Credentials = btoa(`${api.getClientId()}:${api.getClientSecret()}`);
+  const refreshToken = api.getRefreshToken();
+
+  return new Promise(async resolve => {
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
@@ -60,18 +58,11 @@ export const refreshTokens = async (
     });
     const responseJson = await response.json();
     if (responseJson.error) {
-      const spotifyApi = await getTokens(api);
-      if (spotifyApi) return spotifyApi;
+      const initialTokens = await getTokens(api);
+      if (initialTokens) resolve(initialTokens);
     } else {
-      api.setAccessToken(responseJson.newAccessToken);
-      api.setRefreshToken(responseJson.newRefreshToken);
-      return api;
+      api.setCredentials(responseJson._credentials);
+      resolve(responseJson._credentials);
     }
-  } catch (err) {
-    console.error(err);
-  }
+  });
 };
-
-export const getAccessToken = (api:SpotifyWebApi) => {
-  return api.getAccessToken()
-}

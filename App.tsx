@@ -11,7 +11,6 @@ const App = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    console.log("HERE");
     const loadFont = async () => {
       await Font.loadAsync({
         Roboto: require("native-base/Fonts/Roboto.ttf"),

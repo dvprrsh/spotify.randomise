@@ -1,17 +1,21 @@
-import SpotifyWebApi from "spotify-web-api-node";
-import { SAVE_API, ActionTypes_Spotify } from "./spotify.types";
-
+import {
+  SAVE_CREDENTIALS,
+  ActionTypes_Spotify,
+  SAVE_API,
+} from "./spotify.types";
 import { spotifyAPI } from "../../../spotify-credentials/spotifyAPI";
 
-const initialState = spotifyAPI;
+const initialState = { api: spotifyAPI, credentials: {} };
 
 export const spotifyApiReducer = (
-  state: SpotifyWebApi = initialState,
+  state = initialState,
   action: ActionTypes_Spotify,
 ) => {
   switch (action.type) {
     case SAVE_API:
-      return { ...action.payload };
+      return { ...state, api: action.payload };
+    case SAVE_CREDENTIALS:
+      return { ...state, credentials: action.payload };
     default:
       return state;
   }
