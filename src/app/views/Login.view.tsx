@@ -18,7 +18,7 @@ export const LoginView: FC<NavigationStackScreenProps> = ({
 
   useEffect(() => {
     if (spotifyApi.credentials && spotifyApi.credentials.access_token) {
-      navigation.navigate("Home");
+      navigation.navigate("MainApp");
     }
   }, [spotifyApi]);
 

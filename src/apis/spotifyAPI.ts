@@ -1,15 +1,18 @@
 import { AuthSession } from "expo";
 import SpotifyWebApi from "spotify-web-api-node";
 import { Credentials } from "../store/spotify.store/spotify.types";
+import { encode } from "base-64";
 
 const scopes = ["playlist-modify-private", "playlist-modify-private"];
 
 export const getAuthorisation = async (api: SpotifyWebApi) => {
+  console.log("authorise");
+
   const authoriseURL = api.createAuthorizeURL(scopes, "testtesttesttest", true);
   const result = await AuthSession.startAsync({ authUrl: authoriseURL }).catch(
     reason => {
       console.log("REASON", reason);
-    },
+    }
   );
 
   if (result && result.type === "success") {
@@ -22,8 +25,8 @@ export const getAuthorisation = async (api: SpotifyWebApi) => {
 export const getTokens = async (api: SpotifyWebApi) => {
   try {
     const authorizationCode = await getAuthorisation(api); //we wrote this function above
-    const b64Credentials = btoa(
-      `${api.getClientId()}:${api.getClientSecret()}`,
+    const b64Credentials = encode(
+      `${api.getClientId()}:${api.getClientSecret()}`
     );
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
@@ -42,9 +45,11 @@ export const getTokens = async (api: SpotifyWebApi) => {
 };
 
 export const refreshTokens = async (
-  api: SpotifyWebApi,
+  api: SpotifyWebApi
 ): Promise<Credentials> => {
-  const b64Credentials = btoa(`${api.getClientId()}:${api.getClientSecret()}`);
+  const b64Credentials = encode(
+    `${api.getClientId()}:${api.getClientSecret()}`
+  );
   const refreshToken = api.getRefreshToken();
 
   return new Promise(async resolve => {
