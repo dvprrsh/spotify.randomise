@@ -3,6 +3,8 @@ import { Text, StyleSheet } from "react-native";
 import { Icon } from "native-base";
 import { NavigationMaterialBottomTabScreenComponent } from "react-navigation-material-bottom-tabs";
 
+import { SafeAreaView } from "react-navigation";
+
 export const HomeView: NavigationMaterialBottomTabScreenComponent = () => {
   return (
     <SafeAreaView>

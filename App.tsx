@@ -4,8 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 import { useEffect, useState } from "react";
 import { MainNavigation } from "./src/app/views";
-import { store } from "./src/store";
+import { Store } from "./src/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -23,9 +24,12 @@ const App = () => {
   }, []);
 
   if (isReady) {
+    const store = Store();
     return (
-      <Provider store={store}>
-        <MainNavigation />
+      <Provider store={store.reduxStore}>
+        <PersistGate loading={null} persistor={store.persistor}>
+          <MainNavigation />
+        </PersistGate>
       </Provider>
     );
   } else {
