@@ -2,12 +2,13 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { LoginView } from "./Login.view";
 import { HomeView } from "./Home.view";
-
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { SplashScreen } from "./SplashScreen";
 
 export const MainNavigation = createAppContainer(
   createStackNavigator(
     {
+      SplashScreen: SplashScreen,
       Login: LoginView,
       MainApp: createMaterialBottomTabNavigator(
         {
@@ -20,7 +21,7 @@ export const MainNavigation = createAppContainer(
       ),
     },
     {
-      initialRouteName: "Login",
+      initialRouteName: "SplashScreen",
       headerMode: "none",
     }
   )

@@ -1,56 +1,38 @@
 import React, { FC, useEffect } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationStackScreenProps } from "react-navigation-stack";
-import { Container, Header, Body, Title, Content, Icon } from "native-base";
+import { Icon } from "native-base";
 import { useStyles } from "../../hooks/useStyles";
 import { useSelector, useDispatch } from "react-redux";
 import { IState } from "../../store";
-import { saveTokens } from "../../store/spotify.store/spotify.actions";
+import { SafeAreaView } from "react-navigation";
 
-export const LoginView: FC<NavigationStackScreenProps> = ({
-  navigation,
-  ...props
-}) => {
+import { saveCredentials } from "../../store/credentials.store/credentials.actions";
+
+export const LoginView: FC<NavigationStackScreenProps> = ({ navigation }) => {
   const commonStyles = useStyles();
-  const spotifyApi = useSelector((state: IState) => state.spotifyApi);
+  const { spotifyApi } = useSelector((state: IState) => state);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (spotifyApi.credentials && spotifyApi.credentials.access_token) {
-      navigation.navigate("MainApp");
-    }
-  }, [spotifyApi]);
-
   return (
-    <Container>
-      <Header>
-        <Body>
-          <Title>Spotify.Randomise</Title>
-        </Body>
-      </Header>
-      <Content contentContainerStyle={styles.content} padder>
-        <TouchableOpacity
-          style={commonStyles.spotifyLogin}
-          onPress={() => dispatch(saveTokens(spotifyApi.api))}>
-          <Icon
-            type="MaterialCommunityIcons"
-            name="spotify"
-            style={styles.spotifyIcon}
-          />
-          <Text style={styles.whiteText}>Login with Spotify</Text>
-        </TouchableOpacity>
-      </Content>
-    </Container>
+    <SafeAreaView style={commonStyles.content}>
+      <Text style={styles.titleText}>Spotify Randomise</Text>
+      <TouchableOpacity
+        style={commonStyles.spotifyLogin}
+        onPress={() => dispatch(saveCredentials(spotifyApi))}>
+        <Icon
+          type="MaterialCommunityIcons"
+          name="spotify"
+          style={styles.spotifyIcon}
+        />
+        <Text style={styles.whiteText}>Login with Spotify</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   spotifyIcon: {
     color: "white",
     alignSelf: "flex-start",
@@ -59,5 +41,10 @@ const styles = StyleSheet.create({
     color: "white",
     width: "100%",
     textAlign: "center",
+  },
+  titleText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    paddingBottom: 10,
   },
 });

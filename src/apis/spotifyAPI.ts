@@ -1,6 +1,6 @@
 import { AuthSession } from "expo";
 import SpotifyWebApi from "spotify-web-api-node";
-import { Credentials } from "../store/spotify.store/spotify.types";
+import { Credentials } from "../store/credentials.store/credentials.types";
 import { encode } from "base-64";
 
 const scopes = ["playlist-modify-private", "playlist-modify-private"];
@@ -36,7 +36,7 @@ export const getTokens = async (api: SpotifyWebApi) => {
       },
       body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${api.getRedirectURI()}`,
     });
-    const responseJson: Credentials = await response.json();
+    const responseJson = await response.json();
     api.setCredentials(responseJson);
     return responseJson;
   } catch (err) {

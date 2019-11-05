@@ -10,4 +10,9 @@ export const useStyles = () =>
       borderRadius: 50,
       width: "50%",
     },
+    content: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
   });

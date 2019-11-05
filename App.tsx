@@ -7,6 +7,7 @@ import { MainNavigation } from "./src/app/views";
 import { Store } from "./src/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { SplashScreen } from "./src/app/views/SplashScreen";
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -27,7 +28,7 @@ const App = () => {
     const store = Store();
     return (
       <Provider store={store.reduxStore}>
-        <PersistGate loading={null} persistor={store.persistor}>
+        <PersistGate loading={<SplashScreen />} persistor={store.persistor}>
           <MainNavigation />
         </PersistGate>
       </Provider>
