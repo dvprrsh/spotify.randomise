@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, StyleSheet } from "react-native";
 import { Icon } from "native-base";
 import { NavigationMaterialBottomTabScreenComponent } from "react-navigation-material-bottom-tabs";
 import { SafeAreaView } from "react-navigation";
 import { List, Button } from "react-native-paper";
+import { IState } from "../../store";
+import { useSelector } from "react-redux";
 
 export const HomeView: NavigationMaterialBottomTabScreenComponent = () => {
+  const { credentials } = useSelector((state: IState) => state);
+
+  useEffect(() => {
+    console.log(credentials);
+  }, []);
+
   return (
     <SafeAreaView forceInset={{ top: "always" }} style={styles.content}>
       <List.Section title="Select a Playlist...." style={styles.list}>

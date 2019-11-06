@@ -5,10 +5,10 @@ import { persistStore, persistReducer } from "redux-persist";
 import { spotifyApiReducer } from "./spotify.store/spotify.reducer";
 import { AsyncStorage } from "react-native";
 import { credentialsReducer } from "./credentials.store/credentials.reducer";
-import SpotifyWebApi from "spotify-web-api-node";
+import Spotify from "spotify-web-api-js";
 import { Credentials } from "./credentials.store/credentials.types";
 export interface IState {
-  spotifyApi: SpotifyWebApi;
+  spotifyApi: Spotify.SpotifyWebApiJs;
   credentials: Credentials;
 }
 

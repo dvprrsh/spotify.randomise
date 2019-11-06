@@ -1,6 +1,6 @@
 import { SAVE_API } from "./spotify.types";
-import SpotifyWebApi from "spotify-web-api-node";
+import Spotify from "spotify-web-api-js";
 
-export const saveApi = (api: SpotifyWebApi) => {
+export const saveApi = (api: Spotify.SpotifyWebApiJs) => {
   return { type: SAVE_API, payload: api };
 };

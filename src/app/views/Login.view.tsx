@@ -11,7 +11,7 @@ import { saveCredentials } from "../../store/credentials.store/credentials.actio
 
 export const LoginView: FC<NavigationStackScreenProps> = ({ navigation }) => {
   const commonStyles = useStyles();
-  const { spotifyApi } = useSelector((state: IState) => state);
+  const { spotifyApi, credentials } = useSelector((state: IState) => state);
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,9 @@ export const LoginView: FC<NavigationStackScreenProps> = ({ navigation }) => {
       <Text style={styles.titleText}>Spotify Randomise</Text>
       <TouchableOpacity
         style={commonStyles.spotifyLogin}
-        onPress={() => dispatch(saveCredentials(spotifyApi))}>
+        onPress={() =>
+          dispatch(saveCredentials(spotifyApi, credentials.refresh_token))
+        }>
         <Icon
           type="MaterialCommunityIcons"
           name="spotify"
