@@ -21,12 +21,10 @@ export const SplashScreen: FC<Props> | NavigationStackScreenComponent<Props> = (
 
   if (props.navigation) {
     useEffect(() => {
-      if (credentials) {
-        if (credentials.access_token) {
-          props.navigation!.navigate("MainApp");
-        } else {
-          props.navigation!.navigate("Login");
-        }
+      if (credentials && credentials.access_token) {
+        props.navigation!.navigate("MainApp");
+      } else {
+        props.navigation!.navigate("Login");
       }
     }, [credentials]);
   }

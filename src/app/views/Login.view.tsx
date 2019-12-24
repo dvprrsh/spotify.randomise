@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationStackScreenProps } from "react-navigation-stack";
 import { Icon } from "native-base";
@@ -11,7 +11,7 @@ import { saveCredentials } from "../../store/credentials.store/credentials.actio
 
 export const LoginView: FC<NavigationStackScreenProps> = ({ navigation }) => {
   const commonStyles = useStyles();
-  const { spotifyApi, credentials } = useSelector((state: IState) => state);
+  const credentials = useSelector((state: IState) => state.credentials);
 
   const dispatch = useDispatch();
 
@@ -20,9 +20,8 @@ export const LoginView: FC<NavigationStackScreenProps> = ({ navigation }) => {
       <Text style={styles.titleText}>Spotify Randomise</Text>
       <TouchableOpacity
         style={commonStyles.spotifyLogin}
-        onPress={() =>
-          dispatch(saveCredentials(spotifyApi, credentials.refresh_token))
-        }>
+        onPress={() => dispatch(saveCredentials(credentials.refresh_token))}
+      >
         <Icon
           type="MaterialCommunityIcons"
           name="spotify"

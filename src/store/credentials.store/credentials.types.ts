@@ -13,10 +13,10 @@ export type ActionTypes_Credentials =
       payload: null;
     };
 
-export interface Credentials {
-  access_token: string;
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-  token_type: string;
-}
+export type Credentials = {
+  access_token: null | string;
+  expires_in: null | string;
+  refresh_token: null | string;
+  scope: null | string;
+  token_type: null | string;
+};

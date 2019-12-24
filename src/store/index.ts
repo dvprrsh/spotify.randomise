@@ -1,25 +1,22 @@
 import * as Redux from "redux";
 import { combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
-import { persistStore, persistReducer } from "redux-persist";
-import { spotifyApiReducer } from "./spotify.store/spotify.reducer";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import { AsyncStorage } from "react-native";
 import { credentialsReducer } from "./credentials.store/credentials.reducer";
-import Spotify from "spotify-web-api-js";
+
 import { Credentials } from "./credentials.store/credentials.types";
 export interface IState {
-  spotifyApi: Spotify.SpotifyWebApiJs;
   credentials: Credentials;
 }
 
-const persistConfig = {
+const persistConfig: PersistConfig<IState> = {
   key: "key",
   storage: AsyncStorage,
-  blacklist: ["spotifyApi"],
+  timeout: 10000,
 };
 
 const rootReducer = combineReducers({
-  spotifyApi: spotifyApiReducer,
   credentials: credentialsReducer,
 });
 

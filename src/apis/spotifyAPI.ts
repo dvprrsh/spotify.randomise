@@ -4,11 +4,12 @@ import { Credentials } from "../store/credentials.store/credentials.types";
 import { encode } from "base-64";
 import { authCredentials } from "../../spotify-credentials/spotifyAPI";
 
-const scopes = "playlist-modify-private playlist-modify-private";
+const scopes = "playlist-modify-private";
 
 export const spotifyAPI = new Spotify();
 
 export const getAuthorisation = async () => {
+  console.log(authCredentials.redirectUri);
   const result = await AuthSession.startAsync({
     authUrl:
       "https://accounts.spotify.com/authorize" +
@@ -29,9 +30,9 @@ export const getAuthorisation = async () => {
   }
 };
 
-export const getTokens = async (api: Spotify.SpotifyWebApiJs) => {
+export const getTokens = async () => {
   try {
-    const authorizationCode = await getAuthorisation(); //we wrote this function above
+    const authorizationCode = await getAuthorisation();
     const b64Credentials = encode(
       `${authCredentials.clientId}:${authCredentials.clientSecret}`
     );
@@ -44,7 +45,8 @@ export const getTokens = async (api: Spotify.SpotifyWebApiJs) => {
       body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${authCredentials.redirectUri}`,
     });
     const responseJson = await response.json();
-    api.setAccessToken(responseJson._credentials.access_token);
+    console.log(responseJson);
+    spotifyAPI.setAccessToken(responseJson.body.access_token);
     return responseJson;
   } catch (err) {
     console.error(err);
@@ -52,7 +54,6 @@ export const getTokens = async (api: Spotify.SpotifyWebApiJs) => {
 };
 
 export const refreshTokens = async (
-  api: Spotify.SpotifyWebApiJs,
   refreshToken: string
 ): Promise<Credentials> => {
   const b64Credentials = encode(
@@ -69,10 +70,10 @@ export const refreshTokens = async (
     });
     const responseJson = await response.json();
     if (responseJson.error) {
-      const initialTokens = await getTokens(api);
+      const initialTokens = await getTokens();
       if (initialTokens) resolve(initialTokens);
     } else {
-      api.setAccessToken(responseJson._credentials.access_token);
+      spotifyAPI.setAccessToken(responseJson._credentials.access_token);
       resolve(responseJson._credentials);
     }
   });

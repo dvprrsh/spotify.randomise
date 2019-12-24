@@ -4,7 +4,13 @@ import {
   Credentials,
 } from "./credentials.types";
 
-const initialState: Credentials | null = null;
+const initialState: Credentials = {
+  access_token: null,
+  expires_in: null,
+  refresh_token: null,
+  scope: null,
+  token_type: null,
+};
 
 export const credentialsReducer = (
   state = initialState,

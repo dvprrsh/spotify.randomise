@@ -1,14 +1,13 @@
 import { Dispatch } from "redux";
-import { refreshTokens } from "../../apis/spotifyAPI";
-import { SAVE_CREDENTIALS } from "./credentials.types";
-import Spotify from "spotify-web-api-js";
 
-export const saveCredentials = (
-  api: Spotify.SpotifyWebApiJs,
-  refreshToken: string
-) => {
+import { refreshTokens, getTokens } from "../../apis/spotifyAPI";
+import { SAVE_CREDENTIALS } from "./credentials.types";
+
+export const saveCredentials = (refreshToken: string | null) => {
   return async (dispatch: Dispatch) => {
-    const result = await refreshTokens(api, refreshToken);
+    const result = refreshToken
+      ? await refreshTokens(refreshToken)
+      : await getTokens();
     return dispatch({ type: SAVE_CREDENTIALS, payload: result });
   };
 };
